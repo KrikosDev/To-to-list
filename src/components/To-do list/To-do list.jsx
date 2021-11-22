@@ -9,46 +9,32 @@ export const ToDoList = () => {
   // console.log(localTasks);
 
   const createNewTask = () => {
-    if (localTasks.length === 0 || localTasks === null) {
-      const copyTasks = localTasks.concat()
-      copyTasks.push({ text: taskText})
-      setTasks(copyTasks)
+    if(taskText) {
+      const copyTasks = tasks
+      copyTasks.push({ text: taskText })
       const strTask = JSON.stringify(tasks)
       localStorage.setItem('tasks', strTask)
-      console.log(tasks);
+      console.log(tasks)
       setTaskText('')
-    } else {
-      const copyTasks = localTasks.concat()
-      copyTasks.push({ text: taskText})
       setTasks(copyTasks)
-      const strTask = JSON.stringify(tasks)
-      localStorage.setItem('tasks', strTask)
-      // console.log(tasks);
-      setTaskText('')
     }
   }
 
   const deleteTask = (item, ind) => {
     const updatedTasks = tasks.filter((value, index) => {
-      return value !== item && ind !== index;
+      return value !== item && ind !== index
     })
     setTasks(updatedTasks)
-    const strUpdatedTasks = JSON.stringify(tasks)
+    const strUpdatedTasks = JSON.stringify(updatedTasks)
     localStorage.setItem('tasks', strUpdatedTasks)
   }
 
   useEffect(() => {
-    const localTasks = localStorage.getItem('tasks');
-    const localTasksParse = JSON.parse(localTasks);
+    const localTasks = localStorage.getItem('tasks')
+    const localTasksParse = JSON.parse(localTasks)
     setLocalTasks(localTasksParse)
-    // console.log(localTasksParse);
+    setTasks(localTasksParse)
   }, [])
-
-  useEffect(() => {
-    const localTasks = localStorage.getItem('tasks');
-    const localTasksParse = JSON.parse(localTasks);
-    setLocalTasks(localTasksParse)
-  }, [tasks])
 
   return (
     <div className='main-toDoList-div'>
@@ -64,17 +50,19 @@ export const ToDoList = () => {
         </button>
       </div>
       <div className='toDoList-tasks-div'>
-        { (localTasks !== null && localTasks !== 0) && localTasks.map((item, index) => (
-          <div className='tasks-div' key={`${index}-task-${Math.random()}`}>
-            <p className='task-p'>{item.text}</p>
-            <img
-              src={deleteIcon}
-              alt='Пикчи нет'
-              className='deleteIcon'
-              onClick={() => deleteTask(item, index)}
-            />
-          </div>
-        ))}
+        {localTasks !== null &&
+          localTasks !== 0 &&
+          tasks.map((item, index) => (
+            <div className='tasks-div' key={`${index}-task-${Math.random()}`}>
+              <p className='task-p'>{item.text}</p>
+              <img
+                src={deleteIcon}
+                alt='Пикчи нет'
+                className='deleteIcon'
+                onClick={() => deleteTask(item, index)}
+              />
+            </div>
+          ))}
       </div>
     </div>
   )
