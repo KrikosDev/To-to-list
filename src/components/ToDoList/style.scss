@@ -1,0 +1,90 @@
+.main-to-do-list-div {
+}
+
+.to-do-list-input {
+  font-size: large;
+
+  width: 360px;
+  height: 30px;
+  border-radius: 5px;
+  border-width: 1px;
+  margin-top: 20px;
+}
+
+h1 {
+  color: royalblue;
+}
+
+.creation-string-div {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+
+  button {
+    margin-left: 10px;
+  }
+}
+
+.add-task-button:hover {
+  background-color: royalblue;
+}
+
+.add-task-button:active {
+  background-color: black;
+  color: white;
+}
+
+.to-do-list-tasks-div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.task-p {
+  margin-top: 5px;
+  max-width: 350px;
+  min-width: 350px;
+  overflow-wrap: break-word;
+  padding: 10px;
+  box-shadow: none;
+
+  &.MuiPaper-elevation1 {
+    box-shadow: none;
+  }
+}
+
+.task-p-checked {
+  margin-top: 5px;
+  max-width: 350px;
+  min-width: 350px;
+  overflow-wrap: break-word;
+  text-decoration: line-through;
+  padding: 10px;
+
+  &.MuiPaper-elevation1 {
+    box-shadow: none;
+  }
+}
+
+.delete-icon:hover {
+  width: 20px;
+  color: royalblue;
+}
+
+.tasks-div {
+  width: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .delete-icon {
+    width: 40px;
+    margin-left: 10px;
+  }
+}
+
+.filter-div {
+  display: flex;
+  justify-content: center;
+  margin: 25px 0px 25px;
+}
