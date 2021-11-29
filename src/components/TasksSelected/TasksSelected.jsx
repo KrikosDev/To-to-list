@@ -1,15 +1,13 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { Checkbox, Paper } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import StarsIcon from '@material-ui/icons/Stars'
-import { observer } from 'mobx-react-lite'
-// import store from '../../store';
 import { selectedTodos } from '../../store/Store'
+import { observer } from 'mobx-react-lite'
+import './style.scss'
 
-export const Tasks = observer(
+export const TasksSelected = observer(
   ({ changeCheck, deleteTask, tasks, setFilterMeaning, filerState }) => {
-    const [flag, setFlag] = useState(Boolean)
-
     const filerTasks = useMemo(
       () => setFilterMeaning(filerState),
       [tasks, filerState]
@@ -34,12 +32,9 @@ export const Tasks = observer(
                 {item.title}
               </Paper>
               <StarsIcon
-                className={flag ? 'selected-icon-active' :'selected-icon'}
+                className='selected-icon-active'
                 alt='Пикчи нет'
-                onClick={() => {
-                  selectedTodos.addTodo(item)
-                  setFlag(!flag)
-                }}
+                onClick={() => selectedTodos.deleteTodo(item)}
               />
               <DeleteIcon
                 className='delete-icon'
