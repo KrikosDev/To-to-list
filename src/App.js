@@ -1,8 +1,8 @@
 
 import React from 'react';
 import './App.css'
-import { ToDoList } from './components/ToDoList/ToDoList'
-import { ToDoListSelected } from './components/ToDoListSelected/ToDoListSelected';          
+import { ToDoList } from './components/ToDoList'
+import { ToDoListSelected } from './components/ToDoListSelected';          
 
 import {
   Switch,

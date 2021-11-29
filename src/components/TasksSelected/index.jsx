@@ -5,19 +5,39 @@ import StarsIcon from '@material-ui/icons/Stars'
 import { selectedTodos } from '../../store/Store'
 import { observer } from 'mobx-react-lite'
 import './style.scss'
+import { values } from 'mobx'
 
 export const TasksSelected = observer(
-  ({ changeCheck, deleteTask, tasks, setFilterMeaning, filerState }) => {
+  ({
+    changeCheck,
+    deleteTask,
+    tasks,
+    setFilterMeaning,
+    filerState,
+    setTasks,
+  }) => {
     const filerTasks = useMemo(
       () => setFilterMeaning(filerState),
       [tasks, filerState]
     )
 
+    const deleteSelectedTask = (item) => {
+      selectedTodos.deleteTodo(item)
+
+      const newTasks = tasks.filter((value) => {
+        if (value._id !== item._id) {
+          return item
+        }
+      })
+
+      setTasks(newTasks)
+    }
+
     return (
       <div className='to-do-list-tasks-div'>
         {tasks.lenght !== 0 &&
-          filerTasks.map((item, index) => (
-            <div className='tasks-div' key={`${index}-task-${Math.random()}`}>
+          filerTasks.map((item) => (
+            <div className='tasks-div' key={`task-${item._id}`}>
               <Checkbox
                 type='checkbox'
                 checked={item.isDone}
@@ -34,7 +54,7 @@ export const TasksSelected = observer(
               <StarsIcon
                 className='selected-icon-active'
                 alt='Пикчи нет'
-                onClick={() => selectedTodos.deleteTodo(item)}
+                onClick={() => deleteSelectedTask(item)}
               />
               <DeleteIcon
                 className='delete-icon'

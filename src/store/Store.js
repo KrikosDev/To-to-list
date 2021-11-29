@@ -1,8 +1,4 @@
 import {
-  makeObservable,
-  observable,
-  action,
-  computed,
   makeAutoObservable,
 } from 'mobx'
 

@@ -1,23 +1,55 @@
 import React, { useState, useEffect } from 'react'
-import { TasksSelected } from '../TasksSelected/TasksSelected'
-import { FilterSelected } from '../FilterSelected/FilterSelected'
-import { Typography } from '@material-ui/core'
-import style from './style.module.scss'
 import axios from 'axios'
-import { selectedTodos } from '../../store/Store'
+import { Tasks } from '../Tasks'
+import { Filter } from '../filter'
+import { Button, Input, Typography } from '@material-ui/core'
+import './style.scss'
 
-export const ToDoListSelected = () => {
+export const ToDoList = () => {
   const url = 'https://exceed-todo-list.herokuapp.com/api/v1/todos'
+  const [title, setTitle] = useState('')
   const [tasks, setTasks] = useState([])
-  const [get, setGet] = useState([])
+  const [get, setGet] = useState('')
   const [filerState, setFilterState] = useState('Все')
   const filterValue = ['Все', 'Выполненные', 'Невыполненные']
 
-  useEffect(() => {
-    setTasks(selectedTodos.todos)
-  }, [selectedTodos.todos])
+  useEffect(async () => {
+    await axios
+      .get(`${url}`, {
+        headers: { apikey: '952773f1-e82c-465f-acd6-5c282e3a2a99' },
+      })
+      .then((res) => {
+        setTasks(res.data.map(item => {
+          item = {...item, selected: false}
+          return item
+        }))
+      })
+      .catch((e) => {
+        alert(`Ошибка ${e}`)
+      })
+  }, [get])
 
-  console.log(selectedTodos.todos);
+  const createNewTask = async () => {
+    {
+      await axios
+        .post(
+          `${url}`,
+          {
+            title,
+            isDone: false,
+            isSelected: false,
+          },
+          { headers: { apikey: '952773f1-e82c-465f-acd6-5c282e3a2a99' } }
+        )
+        .then((res) => {
+          setTitle('')
+          setGet(res)
+        })
+        .catch((e) => {
+          alert(`Ошибка ${e}`)
+        })
+    }
+  }
 
   const deleteTask = async (item) => {
     await axios
@@ -32,7 +64,7 @@ export const ToDoListSelected = () => {
       })
   }
 
-  const changeCheck = async (isDone, _id) => {
+  const changeCheck = async (title, isDone, _id) => {
     await axios
       .put(
         `${url}/${_id}/done`,
@@ -71,20 +103,33 @@ export const ToDoListSelected = () => {
   return (
     <div className='main-to-do-list-div'>
       <Typography variant='h1'>To-do list</Typography>
-      <Typography className={style.h3} variant='h3'>Selected</Typography>
       <div className='creation-string-div'>
+        <Input
+          value={title}
+          className='to-do-list-input'
+          onChange={(e) => setTitle(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              createNewTask()
+            }
+          }}
+        />
+        <Button onClick={() => createNewTask()} className='add-task-button'>
+          Add
+        </Button>
       </div>
-      <FilterSelected
+      <Filter
         setFilterState={setFilterState}
         filterValue={filterValue}
         filerState={filerState}
       />
-      <TasksSelected
+      <Tasks
         setFilterMeaning={setFilterMeaning}
-        tasks={tasks}
-        filerState={filerState}
         deleteTask={deleteTask}
         changeCheck={changeCheck}
+        setTasks={setTasks}
+        tasks={tasks}
+        filerState={filerState}
       />
     </div>
   )
